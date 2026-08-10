@@ -15,6 +15,8 @@ const { title = 'Letra Chica₁', description = 'Un micro journal sobre derecho,
     <meta property="og:type" content="website" />
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
+  <body>
+    <slot />
 <script>
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", user => {
@@ -26,7 +28,5 @@ const { title = 'Letra Chica₁', description = 'Un micro journal sobre derecho,
     });
   }
 </script>
-  <body>
-    <slot />
   </body>
 </html>
