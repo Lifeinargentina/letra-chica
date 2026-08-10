@@ -1,7 +1,6 @@
 # IMPORTANTE: reemplazá TU-USUARIO/TU-REPO antes de publicar.
 backend:
-  name: github
-  repo: Lifeinargentina/letra-chica
+  name: git-gateway
   branch: main
 
 # Decap crea/edita Markdown en el repo.
