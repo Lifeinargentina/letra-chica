@@ -1,0 +1,187 @@
+---
+---
+<footer class="site-footer">
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div class="footer-brand-col">
+        <div class="footer-brand">
+          letra chica<sup class="footer-sup">¹</sup>
+        </div>
+        <p class="footer-tagline">
+          Un micro journal independiente sobre derecho, negocios, regulación y poder.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Secciones</h4>
+        <ul class="footer-links">
+          <li><a href="/categoria/actualidad/">Actualidad</a></li>
+          <li><a href="/categoria/empresas/">Empresas</a></li>
+          <li><a href="/categoria/sociedades/">Sociedades</a></li>
+          <li><a href="/categoria/fintech/">Fintech</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Explorar</h4>
+        <ul class="footer-links">
+          <li><a href="/categoria/justicia/">Justicia</a></li>
+          <li><a href="/categoria/personas/">Personas</a></li>
+          <li><a href="/categoria/opinion/">Opinión</a></li>
+          <li><a href="/archivo/">Archivo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Letra Chica</h4>
+        <ul class="footer-links">
+          <li><a href="/sobre/">Sobre el journal</a></li>
+          <li><a href="/colaborar/">Colaborar</a></li>
+          <li><a href="/#newsletter">Newsletter</a></li>
+          <li><a href="mailto:letrachicaderecho@gmail.com">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Administrar</h4>
+        <ul class="footer-links">
+          <li><a href="/admin/">Publicar artículo</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 letra chica<sup class="footer-sup-sm">¹</sup> · letrachica.mx</span>
+      <span>Ciudad de México · Distribución restringida</span>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  background: var(--black);
+  color: #fff;
+  padding: 48px 0 32px;
+  margin-top: 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.7fr repeat(4, 1fr);
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid #333;
+}
+
+/* Brand column */
+.footer-brand-col {}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #fff;
+}
+
+.footer-sup {
+  color: var(--red);
+  font-size: 0.4em;
+  vertical-align: super;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.footer-sup-sm {
+  color: var(--red);
+  font-size: 0.7em;
+  vertical-align: super;
+  font-style: normal;
+}
+
+.footer-tagline {
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #888;
+  max-width: 240px;
+}
+
+/* Link columns */
+.footer-col-title {
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 14px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links a {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 300;
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  gap: 20px;
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 32px;
+  }
+  .footer-brand-col {
+    grid-column: 1 / -1;
+    border-bottom: 1px solid #222;
+    padding-bottom: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 20px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+</style>

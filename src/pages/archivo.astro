@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from '../components/Masthead.astro';
+import Footer from '../components/Footer.astro';
+
+const posts = (await getCollection('articulos', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Group by "mes año"
+const groups = new Map<string, typeof posts>();
+for (const post of posts) {
+  const key = post.data.date.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' });
+  if (!groups.has(key)) groups.set(key, []);
+  groups.get(key)!.push(post);
+}
+const groupedPosts = [...groups.entries()];
+
+const fmtDay = (d: Date) =>
+  d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+---
+<BaseLayout title="Archivo · letra chica¹" description="Todas las notas publicadas en letra chica¹, ordenadas cronológicamente.">
+  <Masthead />
+
+  <main class="container">
+    <div class="archive-header">
+      <span class="rubrica">Archivo</span>
+      <h1 class="archive-title">Todas las notas.</h1>
+    </div>
+
+    <div class="archive-body">
+      {groupedPosts.map(([monthYear, articles]) => (
+        <div class="archive-group">
+          <div class="group-header rubrica">{monthYear}</div>
+          {articles.map(post => (
+            <a href={`/articulos/${post.id}/`} class="archive-row">
+              <span class="row-date rubrica">{fmtDay(post.data.date)}</span>
+              <span class="row-title">{post.data.title}</span>
+              <span class="tag row-tag">{post.data.category}</span>
+            </a>
+          ))}
+        </div>
+      ))}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+.archive-header {
+  padding: 40px 0 32px;
+  border-bottom: 2px solid var(--black);
+  margin-bottom: 0;
+}
+
+.archive-title {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 7vw, 80px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-top: 10px;
+  color: var(--black);
+}
+
+.archive-body {
+  padding-bottom: 0;
+}
+
+.archive-group {
+  margin-bottom: 0;
+}
+
+.group-header {
+  padding: 20px 0 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.archive-row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 20px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+
+.archive-row:hover .row-title {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.row-date {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.row-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--black);
+}
+
+.row-tag {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .archive-header {
+    padding: 28px 0 20px;
+  }
+  .archive-title {
+    font-size: clamp(32px, 10vw, 52px);
+  }
+  .group-header {
+    padding: 16px 0 8px;
+  }
+  /* título ocupa fila completa; fecha + tag quedan juntos abajo */
+  .archive-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 5px 10px;
+    padding: 14px 0;
+  }
+  .row-title {
+    width: 100%;
+    order: 1;
+    font-size: 16px;
+  }
+  .row-date {
+    order: 2;
+    flex: none;
+  }
+  .row-tag {
+    order: 2;
+    flex: none;
+  }
+}
+</style>

@@ -1,0 +1,253 @@
+---
+interface Props {
+  title: string;
+  excerpt: string;
+  category: string;
+  date: Date;
+  author: string;
+  slug: string;
+  image?: string;
+  imageAlt?: string;
+  variant?: 'lead' | 'grid' | 'compact' | 'sidebar';
+}
+
+const {
+  title,
+  excerpt,
+  category,
+  date,
+  author,
+  slug,
+  image,
+  imageAlt,
+  variant = 'grid'
+} = Astro.props;
+
+const dateStr = date.toLocaleDateString('es-MX', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+const href = `/articulos/${slug}/`;
+const catHref = `/categoria/${category.toLowerCase()}/`;
+---
+
+{variant === 'lead' && (
+  <article class="card-lead">
+    {image && (
+      <a href={href} class="card-img-wrap">
+        <img src={image} alt={imageAlt || title} class="card-img card-img-lead" />
+      </a>
+    )}
+    <div class="card-body-lead">
+      <a href={catHref} class="kicker">{category}</a>
+      <h2 class="card-title-lead">
+        <a href={href}>{title}</a>
+      </h2>
+      <p class="card-excerpt-lead">{excerpt}</p>
+      <div class="card-byline rubrica">
+        <span>{author}</span>
+        <span>{dateStr}</span>
+      </div>
+    </div>
+  </article>
+)}
+
+{variant === 'sidebar' && (
+  <article class="card-sidebar">
+    <a href={catHref} class="rubrica">{category}</a>
+    <h3 class="card-title-sidebar">
+      <a href={href}>{title}</a>
+    </h3>
+    <p class="card-excerpt-sidebar">{excerpt}</p>
+  </article>
+)}
+
+{variant === 'grid' && (
+  <article class="card-grid">
+    {image && (
+      <a href={href} class="card-img-wrap">
+        <img src={image} alt={imageAlt || title} class="card-img card-img-grid" />
+      </a>
+    )}
+    <a href={catHref} class="rubrica">{category}</a>
+    <h3 class="card-title-grid">
+      <a href={href}>{title}</a>
+    </h3>
+    <p class="card-excerpt-grid">{excerpt}</p>
+  </article>
+)}
+
+{variant === 'compact' && (
+  <article class="card-compact">
+    <a href={catHref} class="rubrica">{category}</a>
+    <h4 class="card-title-compact">
+      <a href={href}>{title}</a>
+    </h4>
+    <p class="card-excerpt-compact">{excerpt}</p>
+  </article>
+)}
+
+<style>
+/* Shared link resets */
+.card-lead a,
+.card-sidebar a,
+.card-grid a,
+.card-compact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-lead a:hover h2,
+.card-lead h2 a:hover,
+.card-sidebar h3 a:hover,
+.card-grid h3 a:hover,
+.card-compact h4 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.card-img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Lead */
+.card-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.card-img-lead {
+  aspect-ratio: 16 / 9;
+}
+
+.card-body-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.card-title-lead {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  line-height: 1.12;
+  margin: 10px 0 14px;
+  color: var(--black);
+}
+
+.card-excerpt-lead {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--grey);
+  margin-bottom: 18px;
+}
+
+.card-byline {
+  display: flex;
+  gap: 20px;
+  color: var(--muted);
+}
+
+/* Sidebar */
+.card-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.card-sidebar:first-child {
+  padding-top: 0;
+}
+
+.card-sidebar:last-child {
+  border-bottom: none;
+}
+
+.card-title-sidebar {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 4px 0 5px;
+  color: var(--black);
+}
+
+.card-excerpt-sidebar {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--grey);
+}
+
+/* Grid */
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.card-img-grid {
+  aspect-ratio: 4 / 3;
+  margin-bottom: 14px;
+}
+
+.card-title-grid {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 6px 0 8px;
+  color: var(--black);
+}
+
+.card-excerpt-grid {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--grey);
+}
+
+/* Compact */
+.card-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.card-compact:last-child {
+  border-bottom: none;
+}
+
+.card-title-compact {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 4px 0 5px;
+  color: var(--black);
+}
+
+.card-excerpt-compact {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--grey);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

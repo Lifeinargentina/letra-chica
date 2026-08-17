@@ -1,0 +1,278 @@
+---
+const today = new Date();
+const dateStr = today.toLocaleDateString('es-MX', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+---
+
+<!-- Slim bar: aparece cuando el masthead sale del viewport -->
+<div class="slim-bar" id="slimBar" aria-hidden="true">
+  <div class="container slim-inner">
+    <a href="/" class="slim-logo" aria-label="letra chica¹ — inicio">
+      letra chica<sup class="slim-sup">¹</sup>
+    </a>
+    <nav class="slim-nav" aria-label="Secciones">
+      <a href="/categoria/sociedades/">Sociedades</a>
+      <a href="/categoria/empresas/">Empresas</a>
+      <a href="/categoria/fintech/">Fintech</a>
+      <a href="/categoria/actualidad/">Actualidad</a>
+      <a href="/categoria/justicia/">Justicia</a>
+      <a href="/categoria/opinion/">Opinión</a>
+      <a href="/archivo/">Archivo</a>
+      <a href="/colaborar/">Colaborar</a>
+    </nav>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container">
+
+    <div class="topbar">
+      <span class="rubrica">Derecho corporativo · México</span>
+      <span class="rubrica">{dateStr} · Micro journal</span>
+    </div>
+
+    <div class="rule-thin"></div>
+
+    <div class="masthead" id="masthead">
+      <a href="/" class="logo-link" aria-label="letra chica¹ — inicio">
+        <span class="logo-text">letra chica<sup class="logo-sup">¹</sup></span>
+      </a>
+    </div>
+
+    <div class="rule-thin"></div>
+
+    <div class="tagline-row">
+      <span class="rubrica">Derecho, negocios, regulación y poder</span>
+      <nav class="main-nav" aria-label="Secciones">
+        <a href="/categoria/sociedades/" class="nav-link">Sociedades</a>
+        <a href="/categoria/empresas/" class="nav-link">Empresas</a>
+        <a href="/categoria/fintech/" class="nav-link">Fintech</a>
+        <a href="/categoria/actualidad/" class="nav-link">Actualidad</a>
+        <a href="/categoria/justicia/" class="nav-link">Justicia</a>
+        <a href="/categoria/opinion/" class="nav-link">Opinión</a>
+        <a href="/archivo/" class="nav-link">Archivo</a>
+        <a href="/colaborar/" class="nav-link">Colaborar</a>
+      </nav>
+    </div>
+
+    <div class="rule-heavy"></div>
+
+  </div>
+</header>
+
+<script>
+  const slimBar = document.getElementById('slimBar');
+  const masthead = document.getElementById('masthead');
+
+  if (slimBar && masthead) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = !entry.isIntersecting;
+        slimBar.classList.toggle('is-visible', visible);
+        slimBar.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      },
+      { threshold: 0 }
+    );
+    observer.observe(masthead);
+  }
+</script>
+
+<style>
+/* Slim sticky bar */
+.slim-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-bottom: 2px solid var(--black);
+  z-index: 200;
+  transform: translateY(-100%);
+  transition: transform 0.2s ease;
+}
+
+.slim-bar.is-visible {
+  transform: translateY(0);
+}
+
+.slim-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.slim-logo {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.slim-sup {
+  color: var(--red);
+  font-size: 0.4em;
+  vertical-align: super;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.slim-nav {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.slim-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.slim-nav a {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 0;
+}
+
+.slim-nav a:hover {
+  color: var(--muted);
+}
+
+/* Full header */
+.site-header {
+  padding-top: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+}
+
+.rule-thin {
+  border-top: 1px solid var(--line);
+}
+
+.rule-heavy {
+  border-top: 2px solid var(--black);
+}
+
+.masthead {
+  text-align: center;
+  padding: 18px 0 20px;
+}
+
+.logo-link {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 10vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--black);
+}
+
+.logo-sup {
+  color: var(--red);
+  font-size: 0.38em;
+  vertical-align: super;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.tagline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 14px;
+}
+
+.main-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.nav-link:hover {
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .tagline-row {
+    padding: 10px 0 12px;
+    gap: 0;
+  }
+  .tagline-row > .rubrica {
+    display: none;
+  }
+  .main-nav {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    gap: 22px;
+    scrollbar-width: none;
+  }
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-link {
+    white-space: nowrap;
+  }
+  .slim-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    padding-top: 14px;
+  }
+  .topbar {
+    padding-bottom: 10px;
+  }
+  .topbar span:first-child {
+    display: none;
+  }
+  .masthead {
+    padding: 14px 0 16px;
+  }
+  .logo-text {
+    font-size: clamp(48px, 13vw, 80px);
+  }
+  .slim-logo {
+    font-size: 18px;
+  }
+}
+</style>
