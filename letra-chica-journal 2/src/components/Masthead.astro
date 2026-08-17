@@ -1,0 +1,167 @@
+---
+const today = new Date();
+const dateStr = today.toLocaleDateString('es-MX', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+---
+<header class="site-header">
+  <div class="container">
+
+    <div class="topbar">
+      <span class="rubrica">Derecho corporativo · México</span>
+      <span class="rubrica">{dateStr} · Micro journal</span>
+    </div>
+
+    <div class="rule-thin"></div>
+
+    <div class="masthead">
+      <a href="/" class="logo-link" aria-label="letra chica¹ — inicio">
+        <span class="logo-text">letra chica<sup class="logo-sup">¹</sup></span>
+      </a>
+    </div>
+
+    <div class="rule-thin"></div>
+
+    <div class="tagline-row">
+      <span class="rubrica">Derecho, negocios, regulación y poder</span>
+      <nav class="main-nav" aria-label="Secciones">
+        <a href="/categoria/sociedades/" class="nav-link">Sociedades</a>
+        <a href="/categoria/empresas/" class="nav-link">Empresas</a>
+        <a href="/categoria/fintech/" class="nav-link">Fintech</a>
+        <a href="/categoria/actualidad/" class="nav-link">Actualidad</a>
+        <a href="/categoria/justicia/" class="nav-link">Justicia</a>
+        <a href="/categoria/opinion/" class="nav-link">Opinión</a>
+        <a href="/archivo/" class="nav-link">Archivo</a>
+        <a href="/colaborar/" class="nav-link">Colaborar</a>
+      </nav>
+    </div>
+
+    <div class="rule-heavy"></div>
+
+  </div>
+</header>
+
+<style>
+.site-header {
+  padding-top: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+}
+
+.rule-thin {
+  border-top: 1px solid var(--line);
+}
+
+.rule-heavy {
+  border-top: 2px solid var(--black);
+}
+
+.masthead {
+  text-align: center;
+  padding: 18px 0 20px;
+}
+
+.logo-link {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 10vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--black);
+}
+
+.logo-sup {
+  color: #D93B2B;
+  font-size: 0.38em;
+  vertical-align: super;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.tagline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 14px;
+}
+
+.main-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  /* touch target mínimo */
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.nav-link:hover {
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  /* Tagline desaparece, nav ocupa todo el ancho */
+  .tagline-row {
+    padding: 10px 0 12px;
+    gap: 0;
+  }
+  .tagline-row > .rubrica {
+    display: none;
+  }
+  .main-nav {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    gap: 22px;
+    scrollbar-width: none;
+  }
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-link {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    padding-top: 14px;
+  }
+  .topbar {
+    padding-bottom: 10px;
+  }
+  /* Solo muestra la fecha en pantallas muy chicas */
+  .topbar span:first-child {
+    display: none;
+  }
+  .masthead {
+    padding: 14px 0 16px;
+  }
+  .logo-text {
+    font-size: clamp(48px, 13vw, 80px);
+  }
+}
+</style>

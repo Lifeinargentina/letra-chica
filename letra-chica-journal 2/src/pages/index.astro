@@ -1,0 +1,261 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from '../components/Masthead.astro';
+import ArticuloCard from '../components/ArticuloCard.astro';
+import Footer from '../components/Footer.astro';
+
+const all = (await getCollection('articulos', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const cover   = all.find(a => a.data.homepageSlot === 'cover') ?? all.find(a => a.data.featured) ?? all[0];
+const sidebar = all.filter(a => a.id !== cover?.id && a.data.homepageSlot === 'sidebar').slice(0, 4);
+const latest  = all.filter(a => a.id !== cover?.id && a.data.homepageSlot === 'latest');
+const focus   = all.filter(a => a.id !== cover?.id && a.data.homepageSlot === 'focus');
+
+// Fallback: if there are no 'latest' slots, use remaining recent articles
+const grid = latest.length ? latest : all.filter(a => a.id !== cover?.id && !sidebar.includes(a)).slice(0, 6);
+---
+<BaseLayout>
+  <Masthead />
+
+  <main class="container">
+
+    <!-- Lead section: cover article (2/3) + sidebar list (1/3) -->
+    {cover && (
+      <section class="lead-section">
+        <div class="lead-grid">
+          <div class="lead-main">
+            <ArticuloCard
+              title={cover.data.title}
+              excerpt={cover.data.excerpt}
+              category={cover.data.category}
+              date={cover.data.date}
+              author={cover.data.author}
+              slug={cover.id}
+              image={cover.data.image}
+              imageAlt={cover.data.imageAlt}
+              variant="lead"
+            />
+          </div>
+
+          {sidebar.length > 0 && (
+            <aside class="lead-sidebar">
+              {sidebar.map(art => (
+                <ArticuloCard
+                  title={art.data.title}
+                  excerpt={art.data.excerpt}
+                  category={art.data.category}
+                  date={art.data.date}
+                  author={art.data.author}
+                  slug={art.id}
+                  variant="sidebar"
+                />
+              ))}
+            </aside>
+          )}
+        </div>
+      </section>
+    )}
+
+    <!-- Secondary grid: 3 columns with filetes -->
+    {grid.length > 0 && (
+      <section class="secondary-section">
+        <div class="section-label rubrica">Más recientes</div>
+        <div class="secondary-grid">
+          {grid.map(art => (
+            <div class="grid-cell">
+              <ArticuloCard
+                title={art.data.title}
+                excerpt={art.data.excerpt}
+                category={art.data.category}
+                date={art.data.date}
+                author={art.data.author}
+                slug={art.id}
+                image={art.data.image}
+                imageAlt={art.data.imageAlt}
+                variant="grid"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Compact notes: homepageSlot === 'focus' -->
+    {focus.length > 0 && (
+      <section class="notes-section">
+        <div class="section-label rubrica">Notas breves</div>
+        <div class="notes-grid">
+          {focus.map(art => (
+            <div class="note-cell">
+              <ArticuloCard
+                title={art.data.title}
+                excerpt={art.data.excerpt}
+                category={art.data.category}
+                date={art.data.date}
+                author={art.data.author}
+                slug={art.id}
+                variant="compact"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+/* Lead section */
+.lead-section {
+  padding: 36px 0 0;
+}
+
+.lead-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+
+.lead-main {
+  padding-right: 40px;
+  border-right: 1px solid var(--line);
+}
+
+.lead-sidebar {
+  padding-left: 32px;
+}
+
+/* Secondary grid */
+.secondary-section {
+  padding: 52px 0 0;
+}
+
+.section-label {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.grid-cell {
+  padding: 0 28px;
+  border-right: 1px solid var(--line);
+}
+
+.grid-cell:nth-child(3n + 1) {
+  padding-left: 0;
+}
+
+.grid-cell:nth-child(3n) {
+  border-right: none;
+  padding-right: 0;
+}
+
+/* Compact notes */
+.notes-section {
+  padding: 52px 0 0;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.note-cell {
+  padding: 0 28px;
+  border-right: 1px solid var(--line);
+}
+
+.note-cell:nth-child(3n + 1) {
+  padding-left: 0;
+}
+
+.note-cell:nth-child(3n) {
+  border-right: none;
+  padding-right: 0;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .lead-grid {
+    grid-template-columns: 1fr;
+  }
+  .lead-main {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 28px;
+    margin-bottom: 24px;
+  }
+  .lead-sidebar {
+    padding-left: 0;
+  }
+  .secondary-grid,
+  .notes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* Reset 3-col nth-child, apply 2-col */
+  .grid-cell,
+  .note-cell {
+    padding: 0 24px;
+    border-right: 1px solid var(--line);
+  }
+  .grid-cell:nth-child(3n + 1),
+  .note-cell:nth-child(3n + 1) {
+    padding-left: 24px;
+  }
+  .grid-cell:nth-child(3n),
+  .note-cell:nth-child(3n) {
+    border-right: 1px solid var(--line);
+    padding-right: 24px;
+  }
+  .grid-cell:nth-child(2n + 1),
+  .note-cell:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+  .grid-cell:nth-child(2n),
+  .note-cell:nth-child(2n) {
+    border-right: none;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .lead-section {
+    padding: 24px 0 0;
+  }
+  .secondary-section,
+  .notes-section {
+    padding: 36px 0 0;
+  }
+  .secondary-grid,
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+  .grid-cell,
+  .note-cell {
+    padding: 0 0 28px;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
+  }
+  .grid-cell:last-child,
+  .note-cell:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+</style>
