@@ -1,0 +1,58 @@
+# IMPORTANTE: reemplazá TU-USUARIO/TU-REPO antes de publicar.
+backend:
+  name: github
+  repo: TU-USUARIO/TU-REPO
+  branch: main
+
+# Decap crea/edita Markdown en el repo.
+media_folder: "public/img/uploads"
+public_folder: "/img/uploads"
+
+locale: "es"
+
+collections:
+  - name: "articulos"
+    label: "Artículos"
+    label_singular: "Artículo"
+    folder: "src/content/articulos"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{slug}}"
+    summary: "{{title}} · {{category}} · {{date}}"
+    sortable_fields: ["date", "title", "category"]
+    view_filters:
+      - label: "Destacados"
+        field: "featured"
+        pattern: true
+      - label: "Borradores"
+        field: "draft"
+        pattern: true
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Bajada", name: "excerpt", widget: "text" }
+      - label: "Categoría"
+        name: "category"
+        widget: "select"
+        options: ["Actualidad", "Empresas", "Sociedades", "Fintech", "Justicia", "Personas", "Opinión"]
+      - { label: "Autor", name: "author", widget: "string", default: "Letra Chica₁" }
+      - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "Imagen principal", name: "image", widget: "image", required: false }
+      - { label: "Texto alternativo de imagen", name: "imageAlt", widget: "string", required: false }
+      - { label: "Epígrafe", name: "imageCaption", widget: "string", required: false }
+      - { label: "Destacado", name: "featured", widget: "boolean", default: false }
+      - label: "Ubicación en portada"
+        name: "homepageSlot"
+        widget: "select"
+        default: "none"
+        options:
+          - { label: "Ninguna", value: "none" }
+          - { label: "Nota de portada", value: "cover" }
+          - { label: "Sidebar", value: "sidebar" }
+          - { label: "Últimas", value: "latest" }
+          - { label: "En foco", value: "focus" }
+      - { label: "Tags", name: "tags", widget: "list", required: false, default: [] }
+      - { label: "Título SEO", name: "seoTitle", widget: "string", required: false }
+      - { label: "Descripción SEO", name: "seoDescription", widget: "text", required: false }
+      - { label: "Borrador", name: "draft", widget: "boolean", default: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }
